@@ -11,10 +11,6 @@ jobs:
           issue-number: ${{ github.event.number }}
           body-includes: /deploy
       - run: |
-<<<<<<< HEAD
           echo ${{ toJson(steps.fc.outputs) }}
-=======
-          echo ${{ steps.fc.outputs }}
->>>>>>> wip
           echo ${{ steps.fc.outputs.comment-id }}
           echo ${{ steps.fc.outputs.comment-body }}
