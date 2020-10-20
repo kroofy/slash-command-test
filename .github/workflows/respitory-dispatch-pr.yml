@@ -9,3 +9,4 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           event-type: deploy-command
+          client-payload: '{"github": ${{ toJson(github) }}}'
