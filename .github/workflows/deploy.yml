@@ -20,6 +20,7 @@ jobs:
           MARKET_CODES: nl*-cte
           SHORT_SHA: ${GITHUB_SHA::8}
       - name: Update comment
+        if: ${{ !!github.event.client_payload.github.payload.comment.id }}
         uses: peter-evans/create-or-update-comment@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
