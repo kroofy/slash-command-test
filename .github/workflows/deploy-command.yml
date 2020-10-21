@@ -5,10 +5,10 @@ on:
   issue_comment:
     types: [created]
 jobs:
-  command:
+  check-command:
     runs-on: ubuntu-latest
     outputs:
-      status: ${{ steps.command.outputs.arguments }}
+      status: ${{ steps.deploy-command.outputs.arguments }}
     steps:
       - name: Check for /deploy command
         id: command
@@ -20,18 +20,18 @@ jobs:
           reaction-type: "eyes"
           allow-edits: "false"
           permission-level: admin
-      - id: command
-        name: Validate /deploy command
+      - id: deploy-command
+        name: Check /deploy command arguments
         run: |
           run: echo "::set-output name=arguments::${{ steps.command.outputs.command-arguments }}"
 
   deploy:
-    if: needs.command.outputs.arguments
+    if: needs.deploy-command.outputs.arguments
     runs-on: ubuntu-latest
-    needs: command
+    needs: check-command
     steps:
       - uses: actions/checkout@v2
       - name: Build
         run: echo $MARKET_CODES
         env:
-          MARKET_CODES: ${{ needs.command.outputs.arguments }}
+          MARKET_CODES: ${{ needs.deploy-command.outputs.arguments }}
