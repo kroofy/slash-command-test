@@ -8,7 +8,7 @@ jobs:
   check-command:
     runs-on: ubuntu-latest
     outputs:
-      status: ${{ steps.deploy-command.outputs.arguments }}
+      arguments: ${{ steps.deploy-command.outputs.arguments }}
     steps:
       - name: Check for /deploy command
         id: command
@@ -26,7 +26,7 @@ jobs:
           echo "::set-output name=arguments::${{ steps.command.outputs.command-arguments }}"
 
   deploy:
-    # if: needs.deploy-command.outputs.arguments
+    if: needs.check-command.outputs.arguments
     runs-on: ubuntu-latest
     needs: check-command
     steps:
@@ -36,4 +36,4 @@ jobs:
           echo ${{ toJson(needs) }}
           echo $MARKET_CODES
         env:
-          MARKET_CODES: ${{ needs.deploy-command.outputs.arguments }}
+          MARKET_CODES: ${{ needs.check-command.outputs.arguments }}
