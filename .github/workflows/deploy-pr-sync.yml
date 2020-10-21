@@ -18,7 +18,7 @@ jobs:
       - id: deploy-command
         name: Check /deploy command arguments
         run: |
-          echo "::set-output name=arguments::${{ steps.command.outputs.command-arguments }}" | sed 's/\/deploy.//g'
+          echo "::set-output name=arguments::${{ steps.fc.outputs.comment-body }}" | sed 's/\/deploy.//g'
 
   deploy:
     if: needs.check-command.outputs.arguments
