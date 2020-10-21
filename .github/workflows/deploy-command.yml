@@ -23,7 +23,7 @@ jobs:
       - id: deploy-command
         name: Check /deploy command arguments
         run: |
-          run: echo "::set-output name=arguments::${{ steps.command.outputs.command-arguments }}"
+          echo "::set-output name=arguments::${{ steps.command.outputs.command-arguments }}"
 
   deploy:
     if: needs.deploy-command.outputs.arguments
