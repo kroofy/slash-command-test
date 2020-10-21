@@ -1,11 +1,15 @@
-on: issue_comment
-name: Issue Comments
+name: Deploy command
+on:
+  pull_request:
+    types: [opened]
+  issue_comment:
+    types: [created]
 jobs:
-  check_comments:
-    name: Check comments for /deploy
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Check for Command
+      - uses: actions/checkout@v2
+      - name: Check for /deploy command
         id: command
         uses: xt0rted/slash-command-action@v1
         with:
@@ -15,7 +19,10 @@ jobs:
           reaction-type: "eyes"
           allow-edits: "false"
           permission-level: admin
-      - name: Act on the command
-        run: |
-          echo "The command was '${{ toJson(steps.command.outputs) }}'
-          echo "The command was '${{ steps.command.outputs.command-name }}'
+      - name: Validate /deploy command
+        if: ${{ !steps.command.outputs.command-arguments }}
+        run: exit 0
+      - name: Build
+        run: echo $MARKET_CODES
+        env:
+          MARKET_CODES: "${{ steps.command.outputs.command-arguments }}"
