@@ -33,7 +33,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build
         run: |
-          echo ${{ toJson(needs) }}
-          echo $MARKET_CODES
+          echo hej
         env:
-          MARKET_CODES: ${{ needs.check-command.outputs.arguments }}
+          MARKET_CODES: "${{ needs.check-command.outputs.arguments }}"
