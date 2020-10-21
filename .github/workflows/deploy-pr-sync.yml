@@ -1,0 +1,33 @@
+name: Deploy on PR sync
+on:
+  pull_request:
+    types: [synchronize]
+
+jobs:
+  check-command:
+    runs-on: ubuntu-latest
+    outputs:
+      arguments: ${{ steps.deploy-command.outputs.arguments }}
+    steps:
+      - name: Find Comment
+        uses: peter-evans/find-comment@v1
+        id: fc
+        with:
+          issue-number: ${{ github.event.number }}
+          body-includes: /deploy
+      - id: deploy-command
+        name: Check /deploy command arguments
+        run: |
+          echo "::set-output name=arguments::${{ steps.command.outputs.command-arguments }}" | sed 's/\/deploy.//g'
+
+  deploy:
+    if: needs.check-command.outputs.arguments
+    runs-on: ubuntu-latest
+    needs: check-command
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          echo hej
+        env:
+          MARKET_CODES: "${{ needs.check-command.outputs.arguments }}"
