@@ -1,0 +1,16 @@
+name: Find Deploy Comment
+on: pull_request
+jobs:
+  findDeployComment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find Comment
+        uses: peter-evans/find-comment@v1
+        id: fc
+        with:
+          issue-number: ${{ github.event.number }}
+          body-includes: /deploy
+      - run: |
+          echo ${{ toJson(steps.fc.outputs) }}
+          echo ${{ steps.fc.outputs.comment-id }}
+          echo ${{ steps.fc.outputs.comment-body }}
