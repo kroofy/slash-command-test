@@ -15,6 +15,7 @@ jobs:
         with:
           issue-number: ${{ github.event.number }}
           body-includes: /deploy
+          direction: last
       - id: deploy-command
         name: Check /deploy command arguments
         run: |
@@ -28,6 +29,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build
         run: |
-          echo hej
+          echo hej ${{ needs.check-command.outputs.arguments }}
         env:
-          MARKET_CODES: "${{ needs.check-command.outputs.arguments }}"
+          MARKET_CODES: '${{ needs.check-command.outputs.arguments }}'
